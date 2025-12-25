@@ -1,0 +1,388 @@
+body {
+  margin: 0;
+  padding: 0;
+  -webkit-app-region: drag; /* <-- This makes the window draggable */
+  background: transparent; /* Completely transparent for true glass effect */
+  backdrop-filter: blur(8px) saturate(110%); /* Much more translucent - less blur and saturation */
+  -webkit-backdrop-filter: blur(8px) saturate(110%);
+  color: rgba(200, 200, 200, 0.95); /* Light grey text color */
+  /* color: rgba(255, 255, 255, 0.95); */
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  border-radius: 16px; /* More rounded for liquid feel */
+  border: 1px solid rgba(255, 255, 255, 0.1); /* Much more subtle border */
+  box-shadow: 
+    0 4px 16px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Ultra-subtle glass reflection effect */
+body::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 16px;
+  background: linear-gradient(135deg, 
+    rgba(255, 255, 255, 0.04) 0%, 
+    transparent 25%, 
+    transparent 75%, 
+    rgba(255, 255, 255, 0.02) 100%);
+  pointer-events: none;
+}
+
+/* Counter bar at the top */
+#counter-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: rgba(0, 0, 0, 0.15);
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  z-index: 10;
+  -webkit-app-region: no-drag;
+}
+
+#today-date {
+  font-size: 10px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.6);
+  margin-right: 8px;
+  font-feature-settings: "tnum";
+}
+
+#counter-value {
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.8);
+  min-width: 20px;
+  text-align: center;
+  font-feature-settings: "tnum";
+}
+
+#counter-decrease,
+#counter-increase {
+  width: 16px;
+  height: 16px;
+  min-width: 16px;
+  padding: 0;
+  font-size: 9px;
+  font-weight: 600;
+  line-height: 1;
+  border-radius: 4px;
+  background: rgba(60, 60, 60, 0.7);
+  border: 1px solid rgba(80, 80, 80, 0.5);
+  color: rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+#counter-decrease:hover,
+#counter-increase:hover {
+  background: rgba(5, 109, 237, 0.8);
+  border-color: rgba(5, 109, 237, 0.6);
+  color: rgba(255, 255, 255, 1);
+  box-shadow: 0 2px 6px rgba(5, 109, 237, 0.3);
+  transform: translateY(-0.5px);
+}
+
+#counter-decrease:active,
+#counter-increase:active {
+  background: rgba(40, 40, 40, 0.8);
+  transform: translateY(0);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+
+
+#timer {
+  margin-top: 18px; /* Account for counter bar height - reduced padding */
+}
+
+#controls {
+  display: flex;
+  gap: 5px;
+  margin-top: 4px; /* Reduced from 6px */
+}
+
+button {
+  -webkit-app-region: no-drag; /* Allow buttons to be clickable */
+  background: rgba(60, 60, 60, 0.95); /* Much more opaque background */
+  color: rgba(255, 255, 255, 1); /* Completely opaque white text */
+  border: 1px solid rgba(80, 80, 80, 0.8);
+  padding: 2px 4px;
+  border-radius: 8px; /* Slightly more rounded */
+  cursor: pointer;
+  font-size: 10px;
+  font-weight: 500; /* Slightly bolder */
+  transition: all 0.2s ease;
+  box-shadow: 
+    0 3px 12px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  min-width: 20px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(5px); /* Reduced blur for more opacity */
+  -webkit-backdrop-filter: blur(5px);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Glass highlight effect for buttons */
+button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(255, 255, 255, 0.3), 
+    transparent);
+  transition: left 0.5s;
+}
+
+button:hover {
+  background: rgba(5, 109, 237, 0.95); /* More opaque hover state */
+  border-color: rgba(5, 109, 237, 0.8);
+  color: rgba(255, 255, 255, 1); /* Keep text fully opaque */
+  box-shadow: 
+    0 5px 16px rgba(5, 109, 237, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+button:hover::before {
+  left: 100%;
+}
+
+button:active {
+  background: rgba(40, 40, 40, 0.95); /* More opaque active state */
+  color: rgba(255, 255, 255, 1); /* Keep text fully opaque */
+  box-shadow: 
+    0 2px 6px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transform: translateY(0);
+}
+
+#timer {
+  font-size: 16px; /* Reduced from 20px */
+  font-weight: 400; /* Slightly bolder */
+  letter-spacing: 0.3px; /* Reduced letter spacing */
+  margin-bottom: 2px; /* Reduced from 4px */
+  font-feature-settings: "tnum"; /* Tabular numbers for consistent width */
+  
+  /* Make timer completely opaque with solid color */
+  color: rgba(255, 255, 255, 1); /* Completely opaque white */
+  text-shadow: 
+    0 1px 3px rgba(0, 0, 0, 0.5), /* Reduced shadow */
+    0 0 15px rgba(255, 255, 255, 0.2); /* Reduced glow */
+  
+  /* Remove gradient to make it solid */
+  background: none;
+  -webkit-background-clip: unset;
+  -webkit-text-fill-color: unset;
+  background-clip: unset;
+}
+
+/* Blinking animation classes */ 
+.blink-blank {
+  background-color: transparent !important;
+}
+.blink-red {
+  background-color: #ff4444 !important;
+}
+
+.blink-green {
+  background-color: #44ff44 !important;
+}
+
+.blink-blue {
+  background-color: #4444ff !important;
+}
+
+/* Hide timer, controls, and counter during blinking */
+.blinking #timer,
+.blinking #controls,
+.blinking #counter-bar {
+  display: none !important;
+}
+
+/* Show acknowledge button during blinking */
+.blinking #acknowledgeBtn {
+  display: flex !important;
+}
+
+/* Acknowledge button styling */
+#acknowledgeBtn {
+  -webkit-app-region: no-drag;
+  background: rgba(76, 175, 80, 0.95);
+  color: rgba(255, 255, 255, 1);
+  border: 2px solid rgba(76, 175, 80, 0.8);
+  padding: 8px 16px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  box-shadow: 
+    0 4px 16px rgba(76, 175, 80, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  position: relative;
+  overflow: hidden;
+  z-index: 100;
+}
+
+#acknowledgeBtn:hover {
+  background: rgba(56, 142, 60, 0.95);
+  border-color: rgba(56, 142, 60, 0.8);
+  box-shadow: 
+    0 6px 20px rgba(76, 175, 80, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  transform: translateY(-2px) scale(1.05);
+}
+
+#acknowledgeBtn:active {
+  background: rgba(46, 125, 50, 0.95);
+  transform: translateY(0) scale(0.98);
+  box-shadow: 
+    0 2px 8px rgba(76, 175, 80, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+/* Work modal styling */
+#workModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  -webkit-app-region: no-drag;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border-radius: 16px;
+  padding: 4px;
+  box-sizing: border-box;
+}
+
+#workModalContent {
+  background: rgba(40, 40, 40, 0.98);
+  padding: 6px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 
+    0 4px 16px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+#workModalTitle {
+  margin: 0;
+  font-size: 8px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  text-align: center;
+  line-height: 1.2;
+}
+
+#workInput {
+  -webkit-app-region: no-drag;
+  background: rgba(20, 20, 20, 0.8);
+  color: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 3px 4px;
+  border-radius: 4px;
+  font-size: 7px;
+  font-family: inherit;
+  outline: none;
+  transition: all 0.2s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+#workInput:focus {
+  border-color: rgba(5, 109, 237, 0.6);
+  box-shadow: 0 0 0 1px rgba(5, 109, 237, 0.2);
+  background: rgba(20, 20, 20, 0.95);
+}
+
+#workInput::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 7px;
+}
+
+#workModalButtons {
+  display: flex;
+  gap: 3px;
+  justify-content: flex-end;
+}
+
+#workSkipBtn,
+#workSubmitBtn {
+  padding: 2px 5px;
+  font-size: 7px;
+  min-width: auto;
+  height: 14px;
+  border-radius: 4px;
+}
+
+#workSkipBtn {
+  background: rgba(80, 80, 80, 0.8);
+  border-color: rgba(100, 100, 100, 0.6);
+}
+
+#workSkipBtn:hover {
+  background: rgba(100, 100, 100, 0.9);
+  border-color: rgba(120, 120, 120, 0.8);
+  transform: translateY(-0.5px);
+}
+
+#workSubmitBtn {
+  background: rgba(5, 109, 237, 0.9);
+  border-color: rgba(5, 109, 237, 0.8);
+}
+
+#workSubmitBtn:hover {
+  background: rgba(5, 109, 237, 1);
+  box-shadow: 0 2px 6px rgba(5, 109, 237, 0.4);
+  transform: translateY(-0.5px);
+}

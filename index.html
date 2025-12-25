@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="counter-bar">
+    <button id="counter-decrease">−</button>
+    <span id="today-date"></span>
+    <span id="counter-value">0</span>
+    <button id="counter-increase">+</button>
+  </div>
+  <div id="timer">25:00</div>
+  <div id="controls">
+    <button id="toggleBtn">▶</button>
+    <button id="resetBtn">⏹</button>
+  </div>
+  <button id="acknowledgeBtn" style="display: none;">✓ Done</button>
+  
+  <!-- Work description modal -->
+  <div id="workModal" style="display: none;">
+    <div id="workModalContent">
+      <p id="workModalTitle">What did you work on?</p>
+      <input type="text" id="workInput" placeholder="Enter work description..." />
+      <div id="workModalButtons">
+        <button id="workSkipBtn">Skip</button>
+        <button id="workSubmitBtn">Save</button>
+      </div>
+    </div>
+  </div>
+  
+  <script src="renderer.js"></script>
+</body>
+</html>
